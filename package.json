@@ -12,6 +12,8 @@
   "author": "Rahul Soni <rahul@attosol.com> (http://www.attosol.com/)",
   "license": "MIT",
   "dependencies": {
+    "adal-node": "^0.1.22",
+    "azure-keyvault": "^2.0.1-preview",
     "command-line-args": "^4.0.6",
     "command-line-usage": "^4.0.0"
   }
