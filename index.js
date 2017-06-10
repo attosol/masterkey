@@ -2,9 +2,9 @@
 
 const commandLineArgs = require('command-line-args');
 const optionDefinitions = [
-  {name: 'get', alias: 'g', type: Boolean},
+  {name: 'get', alias: 'g', type: String},
   {name: 'set', alias: 's', type: Boolean},
-  {name: 'delete', alias: 'd', type: Boolean},
+  {name: 'delete', alias: 'd', type: String},
   {name: 'list', alias: 'l', type: Boolean},
   {name: 'help', alias: 'h', type: Boolean},
   {name: 'key', alias: 'k', type: String},
@@ -59,12 +59,12 @@ if (options.list) {
 
 // Add a key and value to Azure KeyVault
 if (options.get) {
-  if (options.key) {
+  if (options.get) {
     console.log(
       "###################################\n" +
       "Get a Secret from the KeyVault\n" +
       "###################################");
-    keyVault.getSecret(options.key)
+    keyVault.getSecret(options.get)
       .then(function (secret) {
         console.log("Secret = %s\n\n", secret.value);
       })
@@ -74,7 +74,7 @@ if (options.get) {
           "HINT: Use masterkey -l to view all Keys\n\n");
       });
   } else {
-    console.log("Please provide a --key to retrieve.");
+    console.log("Please provide the KeyVault URL from which secret is to be retrieved.");
   }
 }
 
@@ -106,12 +106,12 @@ if (options.set) {
 
 // Delete a key and value from Azure KeyVault
 if (options.delete) {
-  if (options.key) {
+  if (options.delete) {
     console.log(
       "###################################\n" +
       "Deleting Secret from the KeyVault\n" +
       "###################################");
-    keyVault.deleteSecret(options.key)
+    keyVault.deleteSecret(options.delete)
       .then(function (secret) {
         console.log("Secret deleted: %s\n\n", secret);
       })
@@ -121,7 +121,7 @@ if (options.delete) {
           "HINT: Use masterkey -l to view all Keys\n\n");
       });
   } else {
-    console.log("Please provide a --key to delete");
+    console.log("Please provide the KeyVault URL whose secret is to be deleted.");
   }
 }
 
@@ -140,7 +140,24 @@ if (options.transform) {
         return console.log("Unable to find the file. Please check your path.\n\n");
       } else {
         let parsedConfig = JSON.parse(data);
-        console.log(parsedConfig);
+
+        // Recursive function for JSON
+        function processKey(key, callback) {
+          callback(key);
+
+          for (let child in parsedConfig[key]) {
+            processKey(child, function (val) {
+              console.log(val);
+            });
+          }
+        };
+
+        // list all keys in json
+        for (let key in parsedConfig) {
+          processKey(key, function (val) {
+            console.log(val);
+          });
+        }
       }
     });
   } else {

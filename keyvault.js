@@ -4,7 +4,7 @@ module.exports = function () {
   let KeyVault = require('azure-keyvault');
   let AuthenticationContext = require('adal-node').AuthenticationContext;
 
-  let secretconfig = require('./secretconfig');
+  let secretconfig = require('./secretconfig.json');
   let clientId = secretconfig.clientId;
   let clientSecret = secretconfig.clientSecret;
   let vaultUri = secretconfig.vaultUri;
