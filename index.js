@@ -11,7 +11,8 @@ const optionDefinitions = [
   {name: 'value', alias: 'v', type: String},
   {name: 'desc', type: String},
   {name: 'notbefore', type: String},
-  {name: 'expire', type: String}
+  {name: 'expire', type: String},
+  {name: 'transform', alias: 't', type: String},
 ];
 const options = commandLineArgs(optionDefinitions, {partial: true});
 
@@ -121,5 +122,28 @@ if (options.delete) {
       });
   } else {
     console.log("Please provide a --key to delete");
+  }
+}
+
+// Transform all secret URLs to actual secrets in the template and create a regular file
+if (options.transform) {
+  let fileName = options.transform.substring(options.transform.lastIndexOf('/') + 1);
+  let split = fileName.split('.');
+  let fileNameFirst = split[0];
+  let fileNameSecond = split[1];
+  let fileNameLast = split[2];
+
+  if (fileNameSecond === "template") {
+    let fs = require('fs');
+    fs.readFile(options.transform, 'utf8', function (err, data) {
+      if (err) {
+        return console.log("Unable to find the file. Please check your path.\n\n");
+      } else {
+        let parsedConfig = JSON.parse(data);
+        console.log(parsedConfig);
+      }
+    });
+  } else {
+    console.log("Please provide a valid template file name. Ex: ./dev.template.json\n\n");
   }
 }

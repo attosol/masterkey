@@ -43,7 +43,7 @@ module.exports = function () {
         },
       }, function (err, secretBundle) {
         if (err) {
-          // console.log(err);
+          console.log(err);
           onFailure("Unable to save secret.");
         } else {
           onSuccess(secretBundle.id);
