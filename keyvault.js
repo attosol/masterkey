@@ -75,7 +75,7 @@ module.exports = function () {
 
   function getSecret(key) {
     return new Promise(function (onSuccess, onFailure) {
-      console.log("Key = %s", key);
+      // console.log("Key = %s", key);
       client.getSecret(key, function (err, secretBundle) {
         if (err) {
           // console.log(err);

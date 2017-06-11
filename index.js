@@ -128,36 +128,78 @@ if (options.delete) {
 // Transform all secret URLs to actual secrets in the template and create a regular file
 if (options.transform) {
   let fileName = options.transform.substring(options.transform.lastIndexOf('/') + 1);
+  let filePath = options.transform.substring(0, options.transform.lastIndexOf('/'));
   let split = fileName.split('.');
   let fileNameFirst = split[0];
   let fileNameSecond = split[1];
   let fileNameLast = split[2];
 
   if (fileNameSecond === "template") {
+    // Read the template file
     let fs = require('fs');
     fs.readFile(options.transform, 'utf8', function (err, data) {
       if (err) {
         return console.log("Unable to find the file. Please check your path.\n\n");
       } else {
+        // Parse the JSON file
         let parsedConfig = JSON.parse(data);
 
-        // Recursive function for JSON
-        function processKey(key, callback) {
-          callback(key);
+        // Traverse all the elements to filter the ones that are prefixed with "masterkey_"
+        let traverse = require('traverse');
 
-          for (let child in parsedConfig[key]) {
-            processKey(child, function (val) {
-              console.log(val);
-            });
-          }
-        };
+        function ExtractMasterKeys() {
+          // Store all the masterKeys for later processing
+          let masterKeys = [];
+          let k = {};
+          let v = {};
 
-        // list all keys in json
-        for (let key in parsedConfig) {
-          processKey(key, function (val) {
-            console.log(val);
+          traverse(parsedConfig).forEach(function (obj) {
+            if (this.key && this.key.substring(0, 10) === "masterkey_") {
+              k = this.path;
+              v = this.node;
+              let obj = {'key': k, 'value': v};
+              masterKeys.push(obj);
+            }
+          });
+          return masterKeys;
+        }
+
+        function RetrieveSecrets(masterKeys) {
+          let response = [];
+          masterKeys.forEach(function (obj, index) {
+            keyVault.getSecret(obj.value)
+              .then(function (secret) {
+                obj.value = secret.value;
+                response.push(secret.value);
+                if (response.length === masterKeys.length) {
+                  UpdateParsedConfig(parsedConfig, masterKeys);
+                }
+              })
+              .catch((function (err) {
+                console.log(err);
+              }))
           });
         }
+
+        // Callback function that is called after all secrets are retrieved from Azure Key Vault
+        function UpdateParsedConfig(parsedConfig, masterKeys) {
+          let response = [];
+          masterKeys.forEach(function (obj, index) {
+            response.push(index);
+            traverse.set(parsedConfig, obj.key, obj.value);
+            if (response.length === masterKeys.length) {
+              let path = require('path');
+              fs.writeFileSync(path.join(filePath, fileNameFirst + "." + fileNameLast), JSON.stringify(parsedConfig));
+              console.log('Configuration file transformed successfully: ', path.join(filePath, fileNameFirst + "." + fileNameLast));
+            }
+          })
+        }
+
+        // Extract the MasterKeys from the JSON file
+        let masterKeys = ExtractMasterKeys();
+
+        // Retrieve all secrets from Azure Key Vault
+        RetrieveSecrets(masterKeys);
       }
     });
   } else {
