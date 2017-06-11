@@ -7,7 +7,8 @@
     "secrets": {
       "masterkey_db_connection_prod": "https://masterkeykv.vault.azure.net/secrets/MongoDBProduction",
       "masterkey_facebook_client_id_prod": "https://masterkeykv.vault.azure.net/secrets/FBProdClient",
-      "masterkey_facebook_client_secret_prod": "https://masterkeykv.vault.azure.net/secrets/FBProdSecret"
+      "masterkey_facebook_client_secret_prod": "https://masterkeykv.vault.azure.net/secrets/FBProdSecret",
+      "masterkey_blah": "https://masterkeykv.vault.azure.net/secrets/blah"
     }
   },
   "dev": {
