@@ -143,6 +143,7 @@ if (options.app) {
 
 // Transform all secret URLs to actual secrets in the template and create a regular file
   if (options.transform) {
+    console.log("Transforming the template... sit tight!");
     let fileName = options.transform.substring(options.transform.lastIndexOf('/') + 1);
     let filePath = options.transform.substring(0, options.transform.lastIndexOf('/'));
     let split = fileName.split('.');
@@ -170,7 +171,7 @@ if (options.app) {
             let v = {};
 
             traverse(parsedConfig).forEach(function (obj) {
-              if (this.key && this.key.substring(0, 10) === "masterkey_") {
+              if (this.isLeaf && this.node.substring(0, 10) === "masterkey_") {
                 k = this.path;
                 v = this.node;
                 let obj = {'key': k, 'value': v};
@@ -183,7 +184,7 @@ if (options.app) {
           function RetrieveSecrets(masterKeys) {
             let response = [];
             masterKeys.forEach(function (obj, index) {
-              keyVault.getSecret(obj.value)
+              keyVault.getSecret(obj.value.substring(10))
                 .then(function (secret) {
                   obj.value = secret.value;
                   response.push(secret.value);
@@ -196,6 +197,7 @@ if (options.app) {
                 }))
             });
           }
+
 
           // Callback function that is called after all secrets are retrieved from Azure Key Vault
           function UpdateParsedConfig(parsedConfig, masterKeys) {

@@ -1,6 +1,6 @@
 {
   "name": "masterkey",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Just one key for all your application secrets!",
   "preferGlobal": true,
   "bin": {
@@ -17,5 +17,26 @@
     "command-line-args": "^4.0.6",
     "command-line-usage": "^4.0.0",
     "traverse": "^0.6.6"
-  }
+  },
+  "main": "index.js",
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/attosol/masterkey.git"
+  },
+  "keywords": [
+    "Azure",
+    "Key",
+    "Vault",
+    "Azure",
+    "KeyVault",
+    "Microsoft",
+    "MasterKey",
+    "Configuration",
+    "Secure"
+  ],
+  "bugs": {
+    "url": "https://github.com/attosol/masterkey/issues"
+  },
+  "homepage": "https://github.com/attosol/masterkey#readme"
 }
