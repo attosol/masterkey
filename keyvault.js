@@ -1,19 +1,14 @@
-module.exports = function () {
+module.exports = function (clientId, clientSecret, vaultUri) {
   "use strict";
 
   let KeyVault = require('azure-keyvault');
   let AuthenticationContext = require('adal-node').AuthenticationContext;
 
-  let secretconfig = require('./secretconfig.json');
-  let clientId = secretconfig.clientId;
-  let clientSecret = secretconfig.clientSecret;
-  let vaultUri = secretconfig.vaultUri;
-
   // Authenticator - retrieves the access token
   let authenticator = function (challenge, callback) {
-    // Create a new authentication context. 
+    // Create a new authentication context.
     let context = new AuthenticationContext(challenge.authorization);
-    // Use the context to acquire an authentication token. 
+    // Use the context to acquire an authentication token.
     return context.acquireTokenWithClientCredentials(challenge.resource, clientId, clientSecret,
       function (err, tokenResponse) {
         if (err) throw err;
@@ -105,4 +100,4 @@ module.exports = function () {
     deleteSecret: deleteSecret,
     listSecrets: listSecrets
   }
-}();
+};

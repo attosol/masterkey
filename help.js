@@ -54,12 +54,16 @@ module.exports = function () {
           description: 'Set the Key as enabled or disabled'
         },
         {
-          name: 'transform',
+          name: 'transform, -t',
           description: 'Replace all secret URLs with actual secrets in the transformed file.' +
           'Provide a name of the template (ex: dev.template.json , prod.template.config, etc.) that has to be ' +
           'transformed. Each key that needs to be transformed must have a fixed prefix of "masterkey_" ' +
           '(ex. masterkey_db_connection, masterkey_aws_secret, and so on.'
-        }
+        },
+        {
+          name: 'app, -a',
+          description: 'Provide an application name for which you want to manage information.'
+        },
       ]
     }
   ];
