@@ -148,4 +148,4 @@ Configuration file transformed successfully:  sample.json
 1. [Azure Key Vault](https://azure.microsoft.com/en-in/services/key-vault/)  
 2. [Step - by - Step](https://blogs.technet.microsoft.com/kv/2015/06/02/azure-key-vault-step-by-step/)  
 3. [setSecret](http://azure.github.io/azure-sdk-for-node/azure-keyvault/latest/KeyVaultClient.html#setSecret)  
-4. [Packages by Attosol Technologies](https://www.attosol.com/secure-application-secrets-using-masterkey-in-azure-key-vault/)
+4. [Attosol Technologies](https://www.attosol.com/tag/mean/)

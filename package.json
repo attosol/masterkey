@@ -1,6 +1,6 @@
 {
   "name": "masterkey",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Just one key for all your application secrets!",
   "preferGlobal": true,
   "bin": {
