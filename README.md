@@ -1,6 +1,6 @@
 Node.js developers often use a package like [config](https://www.npmjs.com/package/config) to manage different configurations for the application... like development, staging, production, etc. Usually, the secrets like database connection strings, social client secrets, and various other secrets are simply thrown in as cleartext and this is not a good idea. Checking-in the secret file to a Git repository is even worse!!! In this article, you will learn about how you can safeguard your secrets in Azure Key Vault and have a better secret management workflow.
 
-###Step 1 - Create a Global Secret file
+### Step 1 - Create a Global Secret file
 [Register](https://docs.microsoft.com/en-us/azure/key-vault/key-vault-get-started#a-idregisteraregister-an-application-with-azure-active-directory) your application and [create a KeyVault](https://docs.microsoft.com/en-us/azure/key-vault/key-vault-get-started). Once done, copy the values for:
 
 1. Your Application ID
@@ -20,13 +20,13 @@ $ cat ~/.masterkey/azuresecret.json
 }
 ```
 
-###Step 2 - Install MasterKey
+### Step 2 - Install MasterKey
 You can install MasterKey package using npm:
 ```
 npm install -g masterkey
 ```
-###Step 3 - Start using `masterkey`!
-####Create a Secret
+### Step 3 - Start using `masterkey`!
+#### Create a Secret
 You can use `masterkey` to set a secret using your command line. Notice the output will reveal the `Secret URI` and `Secret Absolute URI`. You should use the `Secret URI` in your configuration file as mentioned in `Step 4`. This way, your configuration file that is checked in the Git repository only contains a public URI instead of the secret. This URI is not accessible directly since it is managed by Azure's Key Vault.
 
 **NOTE**  
@@ -46,7 +46,7 @@ Expire On = 1 Jun 2020
 Secret URI = https://masterkeykv.vault.azure.net/secrets/SuperSecret
 Secret Absolute URI = https://masterkeykv.vault.azure.net/secrets/SuperSecret/29cc5e0836a54524bc35d07c6f7d95c5
 ```
-####Get a Secret
+#### Get a Secret
 ```
 $ masterkey --get https://masterkeykv.vault.azure.net/secrets/SuperSecret --app nodeAppName
 ###################################
@@ -54,7 +54,7 @@ Get a Secret from the KeyVault
 ###################################
 SHHH!!! don't tell anyone
 ```
-####List All
+#### List All
 ```
 $ masterkey --list --app nodeAppName
 #######################################
@@ -63,10 +63,10 @@ Listing all Secrets from the KeyVault
 Key | Content Type | Enabled | Not Before | Expires
 https://masterkeykv.vault.azure.net/secrets/SuperSecret | TOP SECRET | true | undefined | Mon Jun 01 2020 00:00:00 GMT+0530 (IST)
 ```
-####Delete
+#### Delete
 If you wish to delete a secret you can use `--delete` switch
 
-####Help
+#### Help
 ```
 $ masterkey -h
 
@@ -91,7 +91,7 @@ Options
   --app, -a          Provide an application name for which you want to manage information.       
 ```
 
-###A Sample Workflow
+### A Sample Workflow
 Let's take a look at a sample configuration for an application that uses a [config](https://www.npmjs.com/package/config) package.
 
 ```
