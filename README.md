@@ -7,7 +7,7 @@ Node.js developers often use a package like [config](https://www.npmjs.com/packa
 2. Key for your Application, and
 3. Your KeyVault URI
 
-Store these values in the following format as a JSON file in /usr/local/.masterkey folder. In this example our application name is called `nodeAppName`. You can have multiple applications in the same file if you need to.
+Store these values in the following format as a JSON file in `/usr/local/.masterkey` folder. In this example our application name is called `nodeAppName`. You can have multiple applications in the same file if you need to.
 
 ```
 $ cat /usr/local/.masterkey/azuresecret.json
