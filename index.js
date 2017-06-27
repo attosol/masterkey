@@ -40,7 +40,7 @@ if (options.app) {
   let fs = require('fs');
   let path = require('path');
   let os = require('os');
-  let data = fs.readFileSync(path.join(os.homedir(), '.masterkey/azuresecret.json'));
+  let data = fs.readFileSync('/usr/local/.masterkey/azuresecret.json');
   let secretconfig = JSON.parse(data);
 
   if (!secretconfig[options.app]) {
