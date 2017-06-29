@@ -175,7 +175,7 @@ if (options.app) {
             let v = {};
 
             traverse(parsedConfig).forEach(function (obj) {
-              if (this.isLeaf && this.node.substring(0, 10) === "masterkey_") {
+              if (this.isLeaf && this.node && (typeof this.node !== "number") && this.node.substring(0, 10) === "masterkey_") {
                 k = this.path;
                 v = this.node;
                 let obj = {'key': k, 'value': v};
