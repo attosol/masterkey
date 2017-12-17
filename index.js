@@ -62,11 +62,15 @@ if (options.app) {
     keyVault.listSecrets()
       .then(function (result) {
         if (result) {
-          console.log("Key | Content Type | Enabled | Not Before | Expires");
-          result.forEach(function (k, v) {
-            console.log(
-              "%s | %s | %s | %s | %s", k.id, k.contentType, k.attributes.enabled, k.attributes.notBefore, k.attributes.expires);
-          });
+          if (result.length > 0) {
+            console.log("Key | Content Type | Enabled | Not Before | Expires");
+            result.forEach(function (k, v) {
+              console.log(
+                "%s | %s | %s | %s | %s", k.id, k.contentType, k.attributes.enabled, k.attributes.notBefore, k.attributes.expires);
+            });
+          } else {
+            console.log("No secrets found")
+          }
           console.log();
         } else {
           console.log("No secrets found.")
